@@ -58,7 +58,7 @@
 
                 <div class="w-16">
                     <div class="inner">
-                        <img class="rounded-full block w-full" src="https://pbs.twimg.com/profile_images/1192060406627545089/SWlYzx4n_bigger.jpg" alt="profile image">
+                        <img class="rounded-full block w-full" src="{{asset('assets/images/default_profile_400x400.png')}}" alt="profile image">
                     </div>
                 </div>
                 <form action="{{route('create_tweet')}}" method="post" style="width: 100%">

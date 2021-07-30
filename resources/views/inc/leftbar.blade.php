@@ -86,7 +86,7 @@
                 <li class="side-navigation-list-item">
                     <a href="#" class="clearfix w-auto p-2 px-4 mt-2 transition-3 inline-block rounded-full">
                         <i class="icon float-left image">
-                            <img src="https://pbs.twimg.com/profile_images/1192060406627545089/SWlYzx4n_normal.jpg" alt="profile image block" class="rounded-full shadow">
+                            <img src="{{asset('assets/images/default_profile_400x400.png')}}" alt="profile image block" class="rounded-full shadow">
                         </i>
                         <span class="name float-left pl-5 font-bold text-xl">Profile</span>
                     </a>
