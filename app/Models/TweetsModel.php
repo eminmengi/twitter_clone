@@ -10,5 +10,6 @@ class TweetsModel extends Model
     use HasFactory;
     protected $table = 'tweets';
 
-    protected $fillable = ['id','text'];
+    protected $fillable = ['id','text','post_id'];
+
 }

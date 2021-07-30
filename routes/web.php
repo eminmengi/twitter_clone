@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TweetsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,12 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.master');
-});
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/',[TweetsController::class,'index'])->name('index');
+    Route::post('create_tweet',[TweetsController::class,'create_tweets'])->name('create_tweet');
+});
 require __DIR__.'/auth.php';
+
