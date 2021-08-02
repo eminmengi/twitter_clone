@@ -17,9 +17,18 @@ class PostsModel extends Model
     {
         return $this->hasOne(TweetsModel::class, 'post_id', 'id');
     }
+    public function retweets()
+    {
+        return $this->hasOne(RetweetsModel::class, 'post_id', 'id');
+    }
 
     public function users()
     {
         return $this->hasOne(User::class,'id','user_id');
+    }
+
+    public function fav_tweet()
+    {
+        return $this->hasMany(FavTweetModel::class,'post_id','id');
     }
 }

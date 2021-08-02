@@ -23,6 +23,8 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/',[TweetsController::class,'index'])->name('index');
     Route::post('create_tweet',[TweetsController::class,'create_tweets'])->name('create_tweet');
+    Route::get('fav_tweet/{id}',[TweetsController::class,'fav_tweet'])->name('fav_tweet');
+    Route::get('retweet/{id}',[TweetsController::class,'retweet'])->name('retweet');
 });
 require __DIR__.'/auth.php';
 
