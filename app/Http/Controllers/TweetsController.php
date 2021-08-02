@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TweetRequest;
 use App\Models\FavTweetModel;
+use App\Models\FollowModel;
 use App\Models\PostsModel;
+use App\Models\RetweetsModel;
 use App\Models\TweetsModel;
+
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TweetsController extends Controller
@@ -22,7 +26,7 @@ class TweetsController extends Controller
             ->with('fav_tweet')
             ->orderBy('created_at', 'desc')->get();
 
-       // return $tweets;
+        return $tweets;
         return view('layouts.master')->with(['tweets'=>$tweets]);
     }
     public function get_tweets()
@@ -64,6 +68,38 @@ class TweetsController extends Controller
 
     public function retweet($id)
     {
+
+
+
+    }
+
+    public function profile($id)
+    {
+        $tweets = PostsModel::where('user_id','=', $id)
+            ->with('tweets')
+            ->with('users')
+            ->with('fav_tweet')
+            ->orderBy('created_at', 'desc')->get();
+        $user = User::find($id);
+        $user_follow = FollowModel::where('follower_id',auth()->id())->where('following_id',$id)->get();
+
+        return view('layouts.profile')->with(['tweets'=>$tweets,'user'=>$user,'user_follow'=>$user_follow]);
+    }
+
+    public function follow($id)
+    {
+        $follow = new FollowModel();
+        $follow->follower_id = auth()->id();
+        $follow->following_id = $id;
+        $follow->save();
+        return back();
+    }
+
+    public function unfollow($id)
+    {
+        $follow = FollowModel::where('follower_id',auth()->id())->where('following_id',$id);
+        $follow->delete();
+
         return back();
     }
 }

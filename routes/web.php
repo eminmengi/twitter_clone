@@ -22,9 +22,12 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/',[TweetsController::class,'index'])->name('index');
+    Route::get('profile/{id}',[TweetsController::class,'profile'])->name('profile');
     Route::post('create_tweet',[TweetsController::class,'create_tweets'])->name('create_tweet');
     Route::get('fav_tweet/{id}',[TweetsController::class,'fav_tweet'])->name('fav_tweet');
     Route::get('retweet/{id}',[TweetsController::class,'retweet'])->name('retweet');
+    Route::get('follow/{id}',[TweetsController::class,'follow'])->name('follow');
+    Route::get('unfollow/{id}',[TweetsController::class,'unfollow'])->name('unfollow');
 });
 require __DIR__.'/auth.php';
 

@@ -84,7 +84,7 @@
 
                 <!-- side navigation list item start -->
                 <li class="side-navigation-list-item">
-                    <a href="#" class="clearfix w-auto p-2 px-4 mt-2 transition-3 inline-block rounded-full">
+                    <a href="{{route('profile',auth()->id())}}" class="clearfix w-auto p-2 px-4 mt-2 transition-3 inline-block rounded-full">
                         <i class="icon float-left image">
                             <img src="{{asset('assets/images/default_profile_400x400.png')}}" alt="profile image block" class="rounded-full shadow">
                         </i>
