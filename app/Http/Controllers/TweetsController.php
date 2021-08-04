@@ -18,15 +18,20 @@ class TweetsController extends Controller
 
     public function index()
     {
+        $user_follow = FollowModel::where('follower_id',auth()->id())->get();
+        $users = array();
+        foreach ($user_follow as $follow){
+            $users[] = $follow->following_id;
+        }
+        $users[] = auth()->id();
 
 
-        $tweets = PostsModel::where('user_id','=', auth()->id())
+        $tweets = PostsModel::whereIn('user_id', $users)
             ->with('tweets')
             ->with('users')
             ->with('fav_tweet')
             ->orderBy('created_at', 'desc')->get();
 
-        return $tweets;
         return view('layouts.master')->with(['tweets'=>$tweets]);
     }
     public function get_tweets()
@@ -69,6 +74,12 @@ class TweetsController extends Controller
     public function retweet($id)
     {
 
+        /*
+        $retweet = new RetweetsModel();
+        $retweet->post_id =$id;
+        $retweet->save(); */
+
+        return back();
 
 
     }
