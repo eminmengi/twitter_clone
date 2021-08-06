@@ -15,7 +15,7 @@ class CreateRetweetsTable extends Migration
     {
         Schema::create('retweets', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('post_id');
+            $table->foreignId('post_id');
             $table->foreign('post_id')->references('id')->on('posts');
             $table->timestamps();
         });

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\TweetsController;
+use App\Http\Controllers\TweetController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,13 +21,13 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/',[TweetsController::class,'index'])->name('index');
-    Route::get('profile/{id}',[TweetsController::class,'profile'])->name('profile');
-    Route::post('create_tweet',[TweetsController::class,'create_tweets'])->name('create_tweet');
-    Route::get('fav_tweet/{id}',[TweetsController::class,'fav_tweet'])->name('fav_tweet');
-    Route::get('retweet/{id}',[TweetsController::class,'retweet'])->name('retweet');
-    Route::get('follow/{id}',[TweetsController::class,'follow'])->name('follow');
-    Route::get('unfollow/{id}',[TweetsController::class,'unfollow'])->name('unfollow');
+    Route::get('/',[TweetController::class,'index'])->name('index');
+    Route::get('profile/{id}',[TweetController::class,'profile'])->name('profile');
+    Route::post('create_tweet',[TweetController::class,'createTweet'])->name('create_tweet');
+    Route::get('fav_tweet/{id}',[TweetController::class,'favTweet'])->name('fav_tweet');
+    Route::get('retweet/{id}',[TweetController::class,'retweet'])->name('retweet');
+    Route::get('follow/{id}',[TweetController::class,'follow'])->name('follow');
+    Route::get('unfollow/{id}',[TweetController::class,'unfollow'])->name('unfollow');
 });
 require __DIR__.'/auth.php';
 

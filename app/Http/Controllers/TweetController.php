@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TweetRequest;
-use App\Models\FavTweetModel;
-use App\Models\FollowModel;
-use App\Models\PostsModel;
-use App\Models\RetweetsModel;
-use App\Models\TweetsModel;
+use App\Http\Requests\TweetStoreRequest;
+use App\Models\TweetFav;
+use App\Models\Follow;
+use App\Models\Post;
+use App\Models\Retweet;
+use App\Models\Tweet;
 
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class TweetsController extends Controller
+class TweetController extends Controller
 {
     //
 
     public function index()
     {
-        $user_follow = FollowModel::where('follower_id',auth()->id())->get();
+        $user_follow = Follow::where('follower_id',auth()->id())->get();
         $users = array();
         foreach ($user_follow as $follow){
             $users[] = $follow->following_id;
@@ -26,11 +26,9 @@ class TweetsController extends Controller
         $users[] = auth()->id();
 
 
-        $tweets = PostsModel::whereIn('user_id', $users)
-            ->with('tweets')
-            ->with('users')
-            ->with('fav_tweet')
-            ->orderBy('created_at', 'desc')->get();
+        $tweets = Post::whereIn('user_id', $users)
+            ->with(['tweet','user','tweetfav'])
+            ->latest()->get();
 
         return view('layouts.master')->with(['tweets'=>$tweets]);
     }
@@ -39,12 +37,12 @@ class TweetsController extends Controller
         return 'test';
     }
 
-    public function create_tweets(TweetRequest $request)
+    public function createTweet(TweetStoreRequest $request)
     {
-        $post = new PostsModel();
+        $post = new Post();
         $post->user_id = auth()->id();
         $post->save();
-        $tweet = new TweetsModel();
+        $tweet = new Tweet();
         $tweet->post_id = $post->id;
         $tweet->content = $request->tweet;
         $tweet->save();
@@ -54,17 +52,17 @@ class TweetsController extends Controller
 
     }
 
-    public function fav_tweet($id)
+    public function favTweet($id)
     {
-        $check_fav = FavTweetModel::where('user_id', auth()->id())->where('post_id',$id)->count();
+        $check_fav = TweetFav::where('user_id', auth()->id())->where('post_id',$id)->count();
         if($check_fav < 1){
-            $fav = new FavTweetModel();
+            $fav = new TweetFav();
             $fav->user_id = auth()->id();
             $fav->post_id = $id;
             $fav->save();
             return back();
         }else{
-            $fav = FavTweetModel::where('user_id', auth()->id())->where('post_id',$id);
+            $fav = TweetFav::where('user_id', auth()->id())->where('post_id',$id);
             $fav->delete();
             return back();
         }
@@ -86,20 +84,18 @@ class TweetsController extends Controller
 
     public function profile($id)
     {
-        $tweets = PostsModel::where('user_id','=', $id)
-            ->with('tweets')
-            ->with('users')
-            ->with('fav_tweet')
+        $tweets = Post::where('user_id','=', $id)
+            ->with(['tweet','user','tweetfav'])
             ->orderBy('created_at', 'desc')->get();
         $user = User::find($id);
-        $user_follow = FollowModel::where('follower_id',auth()->id())->where('following_id',$id)->get();
+        $user_follow = Follow::where('follower_id',auth()->id())->where('following_id',$id)->get();
 
         return view('layouts.profile')->with(['tweets'=>$tweets,'user'=>$user,'user_follow'=>$user_follow]);
     }
 
     public function follow($id)
     {
-        $follow = new FollowModel();
+        $follow = new Follow();
         $follow->follower_id = auth()->id();
         $follow->following_id = $id;
         $follow->save();
@@ -108,7 +104,7 @@ class TweetsController extends Controller
 
     public function unfollow($id)
     {
-        $follow = FollowModel::where('follower_id',auth()->id())->where('following_id',$id);
+        $follow = Follow::where('follower_id',auth()->id())->where('following_id',$id);
         $follow->delete();
 
         return back();
