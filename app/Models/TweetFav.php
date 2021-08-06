@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FavTweetModel extends Model
+class TweetFav extends Model
 {
     use HasFactory;
 
-    protected $table = 'fav_tweet';
+    protected $table = 'tweet_favs';
 
-    protected $fillable = ['id','user_id','post_id'];
+    protected $guarded = [];
 }
