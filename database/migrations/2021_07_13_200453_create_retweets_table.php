@@ -17,6 +17,9 @@ class CreateRetweetsTable extends Migration
             $table->id();
             $table->foreignId('post_id');
             $table->foreign('post_id')->references('id')->on('posts');
+             $table->foreignId('tweet_id');
+            $table->foreign('tweet_id')->references('id')->on('tweets');
+
             $table->timestamps();
         });
     }

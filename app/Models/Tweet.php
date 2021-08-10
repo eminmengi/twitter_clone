@@ -12,4 +12,10 @@ class Tweet extends Model
 
     protected $guarded = [];
 
+    public function get_user()
+    {
+        return $this->hasOne(Post::class, 'id', 'post_id')->with('user');
+
+    }
+
 }

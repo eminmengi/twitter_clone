@@ -224,3 +224,16 @@ li.who-to-follow-list-item:last-child {
 .tweet-username .tweet-user-info {
   top: 100%;
 }
+
+
+.retweet-detail{
+    padding-left: 50px;
+    border-top: solid 1px #ccc;
+    padding-top: 10px;
+}
+
+.ficon{
+    width: 39px;
+    height: 39px;
+    padding: 9px;
+}

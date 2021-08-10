@@ -26,11 +26,12 @@ class TweetController extends Controller
         $users[] = auth()->id();
 
 
-        $tweets = Post::whereIn('user_id', $users)
-            ->with(['tweet','user','tweetfav'])
+        $posts = Post::whereIn('user_id', $users)
+            ->with(['tweet','user','tweetfav','retweet'])
+
             ->latest()->get();
 
-        return view('layouts.master')->with(['tweets'=>$tweets]);
+        return view('layouts.master')->with(['posts'=>$posts]);
     }
     public function get_tweets()
     {
@@ -72,10 +73,13 @@ class TweetController extends Controller
     public function retweet($id)
     {
 
-        /*
-        $retweet = new RetweetsModel();
-        $retweet->post_id =$id;
-        $retweet->save(); */
+        $post = new Post();
+        $post->user_id = auth()->id();
+        $post->save();
+        $retweet = new Retweet();
+        $retweet->post_id =$post->id;
+        $retweet->tweet_id = $id;
+        $retweet->save();
 
         return back();
 

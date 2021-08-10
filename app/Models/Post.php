@@ -17,9 +17,10 @@ class Post extends Model
     {
         return $this->hasOne(Tweet::class, 'post_id', 'id');
     }
+
     public function retweet()
     {
-        return $this->hasOne(Retweet::class, 'post_id', 'id');
+        return $this->hasOne(Retweet::class, 'post_id', 'id')->with('get_tweet');
     }
 
     public function user()
@@ -31,4 +32,6 @@ class Post extends Model
     {
         return $this->hasMany(TweetFav::class,'post_id','id');
     }
+
+
 }
