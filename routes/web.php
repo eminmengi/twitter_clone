@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('create_tweet',[TweetController::class,'createTweet'])->name('create_tweet');
     Route::get('fav_tweet/{id}',[TweetController::class,'favTweet'])->name('fav_tweet');
     Route::get('retweet/{id}',[TweetController::class,'retweet'])->name('retweet');
+    Route::get('unretweet/{id}',[TweetController::class,'unretweet'])->name('unretweet');
     Route::get('follow/{id}',[TweetController::class,'follow'])->name('follow');
     Route::get('unfollow/{id}',[TweetController::class,'unfollow'])->name('unfollow');
 });

@@ -237,3 +237,7 @@ li.who-to-follow-list-item:last-child {
     height: 39px;
     padding: 9px;
 }
+
+.tweet-footer .ficon-wrapper.retweet_active .retweet {
+    background: rgba(54, 215, 121, 0.15);
+}

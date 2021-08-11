@@ -15,7 +15,16 @@ class Tweet extends Model
     public function get_user()
     {
         return $this->hasOne(Post::class, 'id', 'post_id')->with('user');
+    }
 
+    public function tweetfav()
+    {
+        return $this->hasMany(TweetFav::class,'post_id','post_id');
+    }
+
+    public function retweet_users()
+    {
+        return $this->hasMany(Retweet::class, 'tweet_id', 'id')->with('get_user');
     }
 
 }

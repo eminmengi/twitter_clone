@@ -30,7 +30,7 @@ class TweetController extends Controller
             ->with(['tweet','user','tweetfav','retweet'])
 
             ->latest()->get();
-
+      //return $posts;
         return view('layouts.master')->with(['posts'=>$posts]);
     }
     public function get_tweets()
@@ -72,7 +72,7 @@ class TweetController extends Controller
 
     public function retweet($id)
     {
-
+        // Burası düzenlenecek
         $post = new Post();
         $post->user_id = auth()->id();
         $post->save();
@@ -84,6 +84,19 @@ class TweetController extends Controller
         return back();
 
 
+    }
+
+    public function unretweet($id)
+    {
+
+
+        $retweet = Retweet::find($id);
+
+        $post = Post::find($retweet->post_id);
+
+        $retweet->delete();
+        $post->delete();
+        return back();
     }
 
     public function profile($id)
