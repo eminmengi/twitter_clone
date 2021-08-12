@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TweetStoreRequest;
+use App\Models\Mention;
 use App\Models\TweetFav;
 use App\Models\Follow;
 use App\Models\Post;
@@ -27,15 +28,17 @@ class TweetController extends Controller
 
 
         $posts = Post::whereIn('user_id', $users)
-            ->with(['tweet','user','tweetfav','retweet'])
+            ->with(['tweet','user','tweetfav','retweet','mentions'])
 
             ->latest()->get();
       //return $posts;
         return view('layouts.master')->with(['posts'=>$posts]);
     }
-    public function get_tweets()
+    public function get_tweets($id)
     {
-        return 'test';
+
+        $tweet = Tweet::where('id',$id)->with('get_user')->first();
+        return $tweet;
     }
 
     public function createTweet(TweetStoreRequest $request)
@@ -51,6 +54,20 @@ class TweetController extends Controller
         return back()
             ->with('message','Tweet eklendi.');
 
+    }
+
+    public function createMention(Request $request)
+    {
+        $post = new Post();
+        $post->user_id = auth()->id();
+        $post->save();
+        $mention = new Mention();
+        $mention->post_id = $post->id;
+        $mention->tweet_id = $request->tweet_id;
+        $mention->mention_content = $request->mention_content;
+        $mention->save();
+        return back()
+            ->with('message','Alıntı Eklendi eklendi.');
     }
 
     public function favTweet($id)
@@ -101,13 +118,13 @@ class TweetController extends Controller
 
     public function profile($id)
     {
-        $tweets = Post::where('user_id','=', $id)
-            ->with(['tweet','user','tweetfav'])
+        $posts = Post::where('user_id','=', $id)
+            ->with(['tweet','user','tweetfav','retweet','mentions'])
             ->orderBy('created_at', 'desc')->get();
         $user = User::find($id);
         $user_follow = Follow::where('follower_id',auth()->id())->where('following_id',$id)->get();
 
-        return view('layouts.profile')->with(['tweets'=>$tweets,'user'=>$user,'user_follow'=>$user_follow]);
+        return view('layouts.profile')->with(['posts'=>$posts,'user'=>$user,'user_follow'=>$user_follow]);
     }
 
     public function follow($id)

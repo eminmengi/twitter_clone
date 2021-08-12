@@ -33,6 +33,11 @@ class Post extends Model
         return $this->hasMany(TweetFav::class,'post_id','id');
     }
 
+    public function mentions()
+    {
+        return $this->hasOne(Mention::class,'post_id','id')->with('get_tweet');;
+    }
+
 
 
 
