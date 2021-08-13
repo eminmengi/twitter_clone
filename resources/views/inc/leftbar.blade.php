@@ -95,6 +95,8 @@
 
 
                 <!-- side navigation list item start -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
                 <li class="side-navigation-list-item">
                     <a href="#" class="clearfix w-auto p-2 px-4 mt-2 transition-3 inline-block rounded-full">
                         <i class="icon float-left">
@@ -102,6 +104,16 @@
                         <span class="name float-left pl-5 font-bold text-xl">More</span>
                     </a>
                 </li>
+
+
+
+
+                    <x-dropdown-link :href="route('logout')"
+                                     onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                       Çıkış Yap
+                    </x-dropdown-link>
+                </form>
                 <!-- side navigation list item end -->
 
 
