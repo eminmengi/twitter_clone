@@ -19,6 +19,8 @@ class TweetController extends Controller
 
     public function index()
     {
+        $users_all = User::all();
+
         $user_follow = Follow::where('follower_id',auth()->id())->get();
         $users = array();
         foreach ($user_follow as $follow){
@@ -32,7 +34,7 @@ class TweetController extends Controller
 
             ->latest()->get();
       //return $posts;
-        return view('layouts.master')->with(['posts'=>$posts]);
+        return view('layouts.master')->with(['posts'=>$posts,'users'=>$users_all]);
     }
     public function get_tweets($id)
     {
@@ -89,7 +91,7 @@ class TweetController extends Controller
 
     public function retweet($id)
     {
-        // Burası düzenlenecek
+
         $post = new Post();
         $post->user_id = auth()->id();
         $post->save();
@@ -118,13 +120,14 @@ class TweetController extends Controller
 
     public function profile($id)
     {
+        $users_all = User::all();
         $posts = Post::where('user_id','=', $id)
             ->with(['tweet','user','tweetfav','retweet','mentions'])
             ->orderBy('created_at', 'desc')->get();
         $user = User::find($id);
         $user_follow = Follow::where('follower_id',auth()->id())->where('following_id',$id)->get();
 
-        return view('layouts.profile')->with(['posts'=>$posts,'user'=>$user,'user_follow'=>$user_follow]);
+        return view('layouts.profile')->with(['posts'=>$posts,'user'=>$user,'user_follow'=>$user_follow,'users'=>$users_all]);
     }
 
     public function follow($id)
